@@ -6,3 +6,10 @@ if "__main__":
     window = DocumentUploader()
     window.show()
     app.exec()
+
+
+## To do
+
+# Improve visualization json - text in output panel
+# Implement all the LLM
+# Change paths to .env file
