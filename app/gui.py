@@ -3,7 +3,7 @@ import json
 import time
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget,
-    QLabel, QFileDialog, QTextEdit, QSizePolicy, QMessageBox, QProgressBar
+    QLabel, QFileDialog, QTextEdit, QSizePolicy, QMessageBox, QProgressBar, QComboBox
 )
 from PySide6.QtCore import Qt
 
@@ -19,6 +19,7 @@ class DocumentUploader(QWidget):
 
         self.doc_type = None
         self.file_selected = False
+        self.processed_data = None
 
     def init_ui(self):
         main_layout = QHBoxLayout()  # Layout principal: Izquierda (info) | Derecha (JSON o preview futuro)
@@ -50,6 +51,11 @@ class DocumentUploader(QWidget):
         self.label_time = QLabel("")
         self.label_time.setAlignment(Qt.AlignRight)
 
+        #Visualization
+        self.view_mode = QComboBox()
+        self.view_mode.addItems(["JSON", "Text"])
+        self.view_mode.currentTextChanged.connect(self.update_output_view)
+
         ##Add widgets
         self.left_panel.addWidget(self.btn_select_file)
         self.left_panel.addWidget(self.label_info)
@@ -63,6 +69,7 @@ class DocumentUploader(QWidget):
         self.output_box.setReadOnly(True)
         self.output_box.setPlaceholderText("Processed document content will appear here...")
 
+        self.right_panel.addWidget(self.view_mode)
         self.right_panel.addWidget(self.output_box)
         self.right_panel.addWidget(self.progress_bar)
         self.right_panel.addWidget(self.label_time)     
@@ -122,22 +129,20 @@ class DocumentUploader(QWidget):
             elif self.doc_type == "Tax return":
                 image = load_file_image(self.file_path)
                 extracted_data = extract_text_from_rois(image)
-                
-            # Show json in the right panel
-            formatted_json = json.dumps(extracted_data, indent=4)
-            self.output_box.setPlainText(formatted_json)
 
         except Exception as e:
             self.show_error(f"Processing failed: {str(e)}")
             extracted_data = None
         
         finally:
+            self.processed_data = extracted_data
+            self.update_output_view()  # View mode
             end_time = time.time()
             elapsed = end_time - start_time
             self.label_time.setText(f"Processed in {elapsed:.2f} seconds")
             self.progress_bar.setVisible(False)
 
-    def get_file_info(self, path):
+    def get_file_info(self, path: str) -> str:
         try:
             file_name = os.path.basename(path)
             file_ext = os.path.splitext(path)[1]
@@ -151,5 +156,27 @@ class DocumentUploader(QWidget):
             )
         except Exception as e:
             return f"Error reading file info: {e}"
+    
+    def update_output_view(self):
+        if not self.processed_data:
+            return
 
+        mode = self.view_mode.currentText()
+
+        if mode == "JSON":
+            self.output_box.setPlainText(json.dumps(self.processed_data, indent=4))
+        elif mode == "Text":
+            formatted = self.format_pretty_text(self.processed_data)
+            self.output_box.setPlainText(formatted)
+
+    def format_pretty_text(self, data: dict, indent: int = 0) -> str:
+        lines = []
+        spacing = "  " * indent
+        for key, value in data.items():
+            if isinstance(value, dict):
+                lines.append(f"{spacing}{key}:")
+                lines.append(self.format_pretty_text(value, indent + 1))
+            else:
+                lines.append(f"{spacing}{key}: {value}")
+        return "\n".join(lines)
     
