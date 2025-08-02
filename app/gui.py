@@ -6,6 +6,9 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
+from utils.file_loader import load_file_image
+from ocr.ocr_utils import extract_text_from_rois
+
 class DocumentUploader(QWidget):
     def __init__(self):
         super().__init__()
@@ -101,10 +104,11 @@ class DocumentUploader(QWidget):
             #extracted_data = LLM
         elif self.doc_type == "Tax return":
             print("Pocess with OCR")
-            #extracted_data = OCR
+            image = load_file_image(self.file_path)
+            extracted_data = extract_text_from_rois(image)
 
 
-        # 🔧 Simulación de datos extraídos según el tipo
+        # Simulación de datos extraídos según el tipo
         if self.doc_type == "Power of Attorney":
             extracted_data = {
                 "Title": "General Power of Attorney",
@@ -114,16 +118,6 @@ class DocumentUploader(QWidget):
                 "Agent": "Jane Smith",
                 "Summary": "This document grants Jane Smith authority to act on behalf of John Doe.",
                 "Pages": 4
-            }
-        elif self.doc_type == "Tax return":
-            extracted_data = {
-                "Box 4": 1234.56,
-                "Box 7": 2345.67,
-                "Box 10": 3456.78,
-                "Box 14": 0,
-                "Box 15": 789.01,
-                "Box 16": 456.78,
-                "Box 17": 0
             }
 
         # Show json in the right panel
