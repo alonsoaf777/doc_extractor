@@ -5,6 +5,59 @@ import numpy as np
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
+
+def extract_text_from_rois(image):
+    '''
+    This function takes the generated pdf -> image as input and returns a formatted json with the extracted data.
+    
+    Transformation and filters:
+    -The ROIs in rois.json are normalized, therefore the current roi must be scaled with the image shape.
+    -A rezising of the frame is applied. 
+    -The image is converted to gray
+    -Adaptive threshold generates a binary image (gray -> black and white) based on different regions or neighborhoods values.
+    -Dilate method is a morphological transformation, higher kernel is a thinner number.
+    
+    Tesseract config:
+    - --oem3: Uses the best best engine (LSTM)
+    - --psm6: Assumes the selected text is a line of text
+    - -c tessedit_char_whitelist=0123456789:  Digit recognition
+
+    The json formatting was for convinience. A brief summary of each element is displaced with its value. The box number (ex: 5e) 
+    is also displayed. In case someone wanted to extract the values a regex pattern should be used.
+    '''
+    rois = load_normalized_rois(r"app\ocr\rois.json")
+    results = {}
+    height, width = image.shape[:2]
+
+    for idx, roi in enumerate(rois):
+        x = int(roi[0] * width)
+        y = int(roi[1] * height)
+        w = int(roi[2] * width)
+        h = int(roi[3] * height)
+
+        roi_img = image[y:y+h, x:x+w]
+        scale_factor = 3
+        roi_img = cv2.resize(roi_img, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
+        
+        gray = cv2.cvtColor(roi_img, cv2.COLOR_BGR2GRAY)
+        thresh = cv2.adaptiveThreshold(gray, 255,
+                                       cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                       cv2.THRESH_BINARY, 11, 2)
+
+        kernel = np.ones((1, 1), np.uint8) ## Increasing kernel display thinner numbers
+        thresh = cv2.dilate(thresh, kernel, iterations=1)
+
+        # cv2.imshow("window", thresh)
+        # cv2.waitKey(0)
+
+        custom_config = r'--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789'
+        text = pytesseract.image_to_string(thresh, config=custom_config).strip()
+
+        results[f"roi_{idx+1}"] = text if text else "0" #Save each value
+
+    formatted_json = structure_output(results)
+    return formatted_json
+
 # Load ROIs
 def load_normalized_rois(json_path):
     with open(json_path, "r") as f:
@@ -42,52 +95,3 @@ def structure_output(results):
         "Other-from list in instructions (16)" : results.get("roi_24", "0"),
         "Add amounts from lines 4 to 16 (17)" : results.get("roi_25", "0")
     }
-
-def extract_text_from_rois(image):
-    '''
-    This function takes the generated pdf -> image as input and returns a formatted json with the extracted data.
-    
-    Transformation and filters:
-    -The ROIs in rois.json are normalized, therefore the current roi must be scaled with the image shape.
-    -A rezising of the frame is applied. 
-    -The image is converted to gray
-    -Adaptive threshold generates a binary image (gray -> black and white) based on different regions or neighborhoods values.
-    -Dilate method is a morphological transformation, higher kernel is a thinner number.
-    
-    Tesseract config:
-    - --oem3: 
-    - --psm6:
-    - tessedit_char_whitelist=0123456789: 
-    '''
-    rois = load_normalized_rois(r"app\ocr\rois.json")
-    results = {}
-    height, width = image.shape[:2]
-
-    for idx, roi in enumerate(rois):
-        x = int(roi[0] * width)
-        y = int(roi[1] * height)
-        w = int(roi[2] * width)
-        h = int(roi[3] * height)
-
-        roi_img = image[y:y+h, x:x+w]
-        scale_factor = 3
-        roi_img = cv2.resize(roi_img, None, fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
-        
-        gray = cv2.cvtColor(roi_img, cv2.COLOR_BGR2GRAY)
-        thresh = cv2.adaptiveThreshold(gray, 255,
-                                       cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                       cv2.THRESH_BINARY, 11, 2)
-
-        kernel = np.ones((1, 1), np.uint8) ## Increasing kernel display thinner numbers
-        thresh = cv2.dilate(thresh, kernel, iterations=1)
-
-        # cv2.imshow("window", thresh)
-        # cv2.waitKey(0)
-
-        custom_config = r'--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789'
-        text = pytesseract.image_to_string(thresh, config=custom_config).strip()
-
-        results[f"roi_{idx+1}"] = text if text else "0" #Save each value
-
-    formatted_json = structure_output(results)
-    return formatted_json

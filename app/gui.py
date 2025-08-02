@@ -122,6 +122,7 @@ class DocumentUploader(QWidget):
             elif self.doc_type == "Tax return":
                 image = load_file_image(self.file_path)
                 extracted_data = extract_text_from_rois(image)
+                
             # Show json in the right panel
             formatted_json = json.dumps(extracted_data, indent=4)
             self.output_box.setPlainText(formatted_json)
