@@ -1,8 +1,9 @@
 import os
 import json
+import time
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget,
-    QLabel, QFileDialog, QTextEdit, QSizePolicy, QMessageBox
+    QLabel, QFileDialog, QTextEdit, QSizePolicy, QMessageBox, QProgressBar
 )
 from PySide6.QtCore import Qt
 
@@ -41,6 +42,14 @@ class DocumentUploader(QWidget):
         self.btn_process_file = QPushButton("Process file")
         self.btn_process_file.clicked.connect(self.process_file)
 
+        # Progress bar
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setRange(0, 0)  # Modo "indeterminado"
+        self.progress_bar.setVisible(False)  # Solo visible durante procesamiento
+
+        self.label_time = QLabel("")
+        self.label_time.setAlignment(Qt.AlignRight)
+
         ##Add widgets
         self.left_panel.addWidget(self.btn_select_file)
         self.left_panel.addWidget(self.label_info)
@@ -55,6 +64,8 @@ class DocumentUploader(QWidget):
         self.output_box.setPlaceholderText("Processed document content will appear here...")
 
         self.right_panel.addWidget(self.output_box)
+        self.right_panel.addWidget(self.progress_bar)
+        self.right_panel.addWidget(self.label_time)     
 
         # Empaquetar paneles
         main_layout.addLayout(self.left_panel, 1)
@@ -97,32 +108,33 @@ class DocumentUploader(QWidget):
  
         # Clean last json
         self.output_box.clear()
-        
+        self.label_time.setText("")
+        self.progress_bar.setVisible(True)
+        self.repaint()  # Refresh GUI
+
+        start_time = time.time()
         # To do based on type of document
-        if self.doc_type == "Power of Attorney":
-            print("Process with LLM")
-            #extracted_data = LLM
-        elif self.doc_type == "Tax return":
-            print("Pocess with OCR")
-            image = load_file_image(self.file_path)
-            extracted_data = extract_text_from_rois(image)
+        try:
+            if self.doc_type == "Power of Attorney":
+                print("Process with LLM")
+                extracted_data = None
+                #extracted_data = LLM
+            elif self.doc_type == "Tax return":
+                image = load_file_image(self.file_path)
+                extracted_data = extract_text_from_rois(image)
+            # Show json in the right panel
+            formatted_json = json.dumps(extracted_data, indent=4)
+            self.output_box.setPlainText(formatted_json)
 
-
-        # Simulación de datos extraídos según el tipo
-        if self.doc_type == "Power of Attorney":
-            extracted_data = {
-                "Title": "General Power of Attorney",
-                "Document Date": "2023-06-15",
-                "Client Name": "John Doe",
-                "Governing Law": "California",
-                "Agent": "Jane Smith",
-                "Summary": "This document grants Jane Smith authority to act on behalf of John Doe.",
-                "Pages": 4
-            }
-
-        # Show json in the right panel
-        formatted_json = json.dumps(extracted_data, indent=4)
-        self.output_box.setPlainText(formatted_json)
+        except Exception as e:
+            self.show_error(f"Processing failed: {str(e)}")
+            extracted_data = None
+        
+        finally:
+            end_time = time.time()
+            elapsed = end_time - start_time
+            self.label_time.setText(f"Processed in {elapsed:.2f} seconds")
+            self.progress_bar.setVisible(False)
 
     def get_file_info(self, path):
         try:

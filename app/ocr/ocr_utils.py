@@ -20,8 +20,8 @@ def structure_output(results):
             "State and local income taxes (5a)": results.get("roi_5", "0"),
             "State and local real estate taxes (5b)": results.get("roi_6", "0"),
             "State and local personal property taxes (5c)": results.get("roi_7", "0"),
-            "Lines 5a plus 5b plus 5c": results.get("roi_8", "0"),
-            "Smaller of 5d or 10,000": results.get("roi_9", "0")
+            "Lines 5a plus 5b plus 5c (5d)": results.get("roi_8", "0"),
+            "Smaller of 5d or 10,000 (5e)": results.get("roi_9", "0")
         },
         "Other taxes (6)" : results.get("roi_10", "0"),
         "Lines 5e plus 6 (7)" : results.get("roi_11", "0"),
@@ -44,6 +44,21 @@ def structure_output(results):
     }
 
 def extract_text_from_rois(image):
+    '''
+    This function takes the generated pdf -> image as input and returns a formatted json with the extracted data.
+    
+    Transformation and filters:
+    -The ROIs in rois.json are normalized, therefore the current roi must be scaled with the image shape.
+    -A rezising of the frame is applied. 
+    -The image is converted to gray
+    -Adaptive threshold generates a binary image (gray -> black and white) based on different regions or neighborhoods values.
+    -Dilate method is a morphological transformation, higher kernel is a thinner number.
+    
+    Tesseract config:
+    - --oem3: 
+    - --psm6:
+    - tessedit_char_whitelist=0123456789: 
+    '''
     rois = load_normalized_rois(r"app\ocr\rois.json")
     results = {}
     height, width = image.shape[:2]
@@ -63,7 +78,7 @@ def extract_text_from_rois(image):
                                        cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                        cv2.THRESH_BINARY, 11, 2)
 
-        kernel = np.ones((2, 2), np.uint8)
+        kernel = np.ones((1, 1), np.uint8) ## Increasing kernel display thinner numbers
         thresh = cv2.dilate(thresh, kernel, iterations=1)
 
         # cv2.imshow("window", thresh)
@@ -72,7 +87,7 @@ def extract_text_from_rois(image):
         custom_config = r'--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789'
         text = pytesseract.image_to_string(thresh, config=custom_config).strip()
 
-        results[f"roi_{idx+1}"] = text if text else "0"
+        results[f"roi_{idx+1}"] = text if text else "0" #Save each value
 
     formatted_json = structure_output(results)
     return formatted_json
