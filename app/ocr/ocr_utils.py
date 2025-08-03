@@ -2,8 +2,12 @@ import cv2
 import pytesseract
 import json
 import numpy as np
+from dotenv import load_dotenv
+import os
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+load_dotenv()
+tesseract_path = os.getenv("TESSERACT_PATH")
+pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 
 def extract_text_from_rois(image):
