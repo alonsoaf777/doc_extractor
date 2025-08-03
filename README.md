@@ -5,8 +5,7 @@ Extract structured data from PDF documents using OCR and LLM processing.
 ## Prerequisites
 - Python 3.9+
 - Tesseract OCR
-- (Optional) Llamafile for local LLM
-- (Optional) OpenAI API key
+- Llamafile for local LLM or OpenAI API key
 
 ### Disclaimer
 
