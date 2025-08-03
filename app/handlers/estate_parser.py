@@ -9,12 +9,18 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 api_model = os.getenv("OPENAI_API_MODEL")  
 
-# Client
+# Client 
 use_local_model = api_key.startswith("sk-local")
-api_base = "http://127.0.0.1:8080/v1" if use_local_model else None
+api_base = "http://127.0.0.1:8080/v1" if use_local_model else None #openai models do not require endpoint but locals do
 client = OpenAI(api_key=api_key, base_url=api_base)
 
 def text_completion(document_text):
+    '''
+    This function calls the LLM model to complete the text.
+    The response is extracted and formated to extract a desired json structure.
+
+    The prompt was built using the build_prompt function that explicitly asks for an output structure with some specific instructions.
+    '''
     response = client.chat.completions.create(
         model=api_model, 
         messages=[
@@ -27,7 +33,6 @@ def text_completion(document_text):
     try:
         match = re.search(r"<json>\s*(\{.*?\})\s*</json>", content, re.DOTALL)
         cleaned = match.group(1)
-        print(cleaned)
     except:
         return content
 
