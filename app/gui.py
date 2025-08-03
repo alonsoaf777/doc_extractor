@@ -100,7 +100,7 @@ class DocumentUploader(QWidget):
             self,
             "Open Document",
             "",
-            "Documents (*.pdf *.doc *.docx *.txt);;All Files (*)"
+            "PDF Files (*.pdf)"
         )
 
         if file_path:
@@ -162,11 +162,8 @@ class DocumentUploader(QWidget):
         # To do based on type of document
         try:
             if self.doc_type == "Power of Attorney":
-                print("Process with LLM")
-                self.num_pages, info = extract_and_clean(self.file_path)
-                print(info)
+                self.num_pages, info = extract_text_from_pdf(self.file_path)
                 extracted_data = text_completion(info)
-                #extracted_data = LLM
             elif self.doc_type == "Tax return":
                 image = load_file_image(self.file_path) #pdf -> image
                 extracted_data = extract_text_from_rois(image)
@@ -206,8 +203,14 @@ class DocumentUploader(QWidget):
         if mode == "JSON":
             self.output_box.setPlainText(json.dumps(self.processed_data, indent=4))
         elif mode == "Text":
-            formatted = self.format_pretty_text(self.processed_data)
-            self.output_box.setPlainText(formatted)
+            try:
+                formatted = self.format_pretty_text(self.processed_data)
+                self.output_box.setPlainText(formatted)
+            except Exception as e:
+                self.show_error(f"Cannot convert to text: {str(e)}")
+                self.output_box.setPlainText(json.dumps(self.processed_data, indent=4))
+                
+
 
     def format_pretty_text(self, data: dict, indent: int = 0) -> str:
         '''

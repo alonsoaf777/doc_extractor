@@ -4,6 +4,7 @@ import io
 import cv2
 import numpy as np
 import re 
+from markdownify import markdownify as md
 
 def load_file_image(file_path, zoom_x=4.0, zoom_y=4.0):
     '''
@@ -26,7 +27,7 @@ def load_file_image(file_path, zoom_x=4.0, zoom_y=4.0):
     else:
         raise ValueError("Unsupported file type")
 
-def extract_text_from_pdf(path, min_text_chars=100):
+def extract_text_from_pdf(path):
     """
     Extracts text from pdfs
     """
@@ -39,7 +40,7 @@ def extract_text_from_pdf(path, min_text_chars=100):
             full_text.append(text)
 
     extracted_text = "\n".join(full_text)
-    return extracted_text
+    return len(pdf), md(extracted_text)
 
 def extract_and_clean(pdf_path):
     doc = fitz.open(pdf_path)

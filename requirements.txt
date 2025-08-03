@@ -20,4 +20,4 @@ pydantic>=2.6.0
 
 #Env
 python-dotenv>=1.0.0
-
+markdownify
