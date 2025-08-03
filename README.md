@@ -91,6 +91,10 @@ project-root/
 └── README.md           # This file
 ```
 
+## How to use:
+<img width="1117" height="655" alt="image" src="https://github.com/user-attachments/assets/571da283-9f7d-4412-8e11-a65910f4f5ee" />
+
+
 ## Troubleshooting
 - Ensure Tesseract path in .env is correct
 - Verify your LLM server is running (for local processing)
