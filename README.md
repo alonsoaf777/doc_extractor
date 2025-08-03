@@ -55,7 +55,7 @@ OPENAI_API_MODEL = "Llama-3.2-3B-Instruct.Q6_K.gguf"  # Your model name from cur
 ```
 
 ### Option 2: OpenAI API Processing
-1. Get your API key from OpenAI Platform
+1. Get your API key from https://platform.openai.com
 2. Choose your preferred model
 3. Update your .env file:
 ```bash
