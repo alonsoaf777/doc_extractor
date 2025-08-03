@@ -10,10 +10,10 @@ Extract structured data from PDF documents using OCR and LLM processing.
 
 ### Disclaimer
 
-- This project was tested with assets/ documents.
+- This project was tested with assets/ documents using Python 3.9.2.
 - For local LLM: LLaMA 3.2 3B Instruct (2.62 GB)
 - For API model: gpt-4o-mini (free budget)
-- Last version of tesseract for windows: 
+- Last version of tesseract for windows: tesseract-ocr-w64-setup-5.5.0.20241111.exe (64 bit)
 
 ## Installation
 1. Clone this repo
