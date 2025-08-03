@@ -170,6 +170,7 @@ class DocumentUploader(QWidget):
             if self.doc_type == "Power of Attorney":
                 self.num_pages, info = extract_text_from_pdf(self.file_path)
                 extracted_data = text_completion(info)
+                extracted_data["pages"] = self.num_pages 
             elif self.doc_type == "Tax return":
                 image = load_file_image(self.file_path) #pdf -> image
                 extracted_data = extract_text_from_rois(image)
