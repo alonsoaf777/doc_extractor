@@ -132,7 +132,8 @@ After running the app the GUI will pop up:
 - In each sample the information of the selected file is displayed as well as the processing time.
 - OpenAI sample model "gpt-4o-mini" performs much better than the selected llama file in terms of processing and output quality. This could be caused due to the simplicity of the llama file selected for this example.
 - In the top righ corner the visualization of the extracted data can be changed for a more human version.
-- The selected JSON format of tax return type is a brief summary of each box instead of just "{5: 1023, 5a: 12300}". 
+- The selected JSON format of tax return type is a brief summary of each box instead of just "{5: 1023, 5a: 12300}".
+- The ROI´s coordinates were taken from the obtain_rois notebook and saved inside ocr/rois.json file. 
 
 ## Troubleshooting
 - Ensure Tesseract path in .env is correct
