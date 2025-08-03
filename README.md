@@ -28,4 +28,16 @@ pip install -r requirements.txt
 - Install using the .exe
 - Use default settings and save in desired path (default: C:/Program Files/Tesseract-OCR/tesseract.exe)
 
+5. Create a .env file in the project root with the following structure:
+```text
+TESSERACT_PATH = "your_tesseract_path"
+OPENAI_API_KEY = "your_api_key_or_sk-local"
+OPENAI_API_MODEL = "your_model_name"
+```
+
+## Configuration
+
+### Option 1: Local Processing with Llamafile
+
+
 
