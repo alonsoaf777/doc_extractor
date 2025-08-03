@@ -137,9 +137,10 @@ After running the app the GUI will pop up:
 
 ## Troubleshooting
 - Ensure Tesseract path in .env is correct
-- Verify your LLM server is running (for local processing)
+- Verify your LLM server is running (for local processing) in "http://127.0.0.1:8080"
 - Check your API key (for OpenAI processing)
 - Make sure all dependencies are installed
+  
 
 
 
