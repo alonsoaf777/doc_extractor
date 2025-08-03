@@ -8,6 +8,13 @@ Extract structured data from PDF documents using OCR and LLM processing.
 - (Optional) Llamafile for local LLM
 - (Optional) OpenAI API key
 
+### Disclaimer
+
+- This project was tested with assets/ documents.
+- For local LLM: LLaMA 3.2 3B Instruct (2.62 GB)
+- For API model: gpt-4o-mini (free budget)
+- Last version of tesseract for windows: 
+
 ## Installation
 1. Clone this repo
 ```bash
