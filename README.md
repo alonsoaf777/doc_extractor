@@ -38,6 +38,23 @@ OPENAI_API_MODEL = "your_model_name"
 ## Configuration
 
 ### Option 1: Local Processing with Llamafile
+1. Download a Llama file from https://github.com/Mozilla-Ocho/llamafile?tab=readme-ov-file#other-example-llamafiles.
+2. On Windows, rename the file extension from .llama to .exe
+3. Run the model server 
+```bash
+./{NAME OF YOUR FILE.exe} --server
+```
+4. In another PowerShell window while your llama is runnning (commonly http://127.0.0.1:8080), get your model ID:
+```bash
+curl http://127.0.0.1:8080/v1/models
+```
+5. Update your .env file:
+```bash
+OPENAI_API_KEY = "sk-local"
+OPENAI_API_MODEL = "Llama-3.2-3B-Instruct.Q6_K.gguf"  # Your model name from curl
+```
+
+### Option 2: OpenAI API Processing
 
 
 
