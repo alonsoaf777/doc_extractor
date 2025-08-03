@@ -63,12 +63,41 @@ OPENAI_API_KEY = "your-api-key-here"
 OPENAI_API_MODEL = "gpt-4o-mini"  # or your preferred model
 ```
 
+## Running the Application
 Your .env file should look like this example:
 ```
 TESSERACT_PATH = "C:/Program Files/Tesseract-OCR/tesseract.exe"
 OPENAI_API_KEY = "######"
 OPENAI_API_MODEL = "gpt-4"
 ```
+
+1. Activate your virtual environment (if not already active):
+```bash
+.\venv\Scripts\activate
+```
+2. From the project root directory (containing app/, .env, etc.), run:
+```bash
+python .\app\main.py
+```
+
+## Project Structure
+```text
+project-root/
+│
+├── app/                # Application code
+├── venv/               # Virtual environment
+├── .env                # Environment variables
+├── requirements.txt    # Python dependencies
+└── README.md           # This file
+```
+
+## Troubleshooting
+- Ensure Tesseract path in .env is correct
+- Verify your LLM server is running (for local processing)
+- Check your API key (for OpenAI processing)
+- Make sure all dependencies are installed
+
+
 
 
 
