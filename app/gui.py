@@ -7,8 +7,9 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
-from utils.file_loader import load_file_image
+from utils.file_loader import load_file_image, extract_text_from_pdf, extract_and_clean
 from ocr.ocr_utils import extract_text_from_rois
+from handlers.estate_parser import text_completion
 
 class DocumentUploader(QWidget):
     def __init__(self):
@@ -20,6 +21,7 @@ class DocumentUploader(QWidget):
         self.doc_type = None
         self.file_selected = False
         self.processed_data = None
+        self.num_pages = None
 
     def init_ui(self):
         main_layout = QHBoxLayout()  # Principal layout. Left file selection - Right display
@@ -161,7 +163,9 @@ class DocumentUploader(QWidget):
         try:
             if self.doc_type == "Power of Attorney":
                 print("Process with LLM")
-                extracted_data = None
+                self.num_pages, info = extract_and_clean(self.file_path)
+                print(info)
+                extracted_data = text_completion(info)
                 #extracted_data = LLM
             elif self.doc_type == "Tax return":
                 image = load_file_image(self.file_path) #pdf -> image

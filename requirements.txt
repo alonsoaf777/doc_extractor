@@ -1,9 +1,9 @@
 # GUI and visuals
-PySide6>=6.5                # Graphic interface (Qt)
-Pillow>=10.0.0              # Image processing 
+PySide6>=6.5             
+Pillow>=10.0.0              
 
 # OCR
-pytesseract>=0.3.10         # OCR wrapper 
+pytesseract>=0.3.10        
 
 # PDF to image
 PyMuPDF>=1.23.0           
@@ -13,7 +13,11 @@ opencv-python>=4.8.0
 
 # Completion and parsing
 openai>=1.30.0             
-json5>=0.9.14              
+json5>=0.9.14           
 
-# Opcional para mejora OCR o layout analysis
-scikit-image>=0.22.0        # Utilidades de procesamiento de imágenes más avanzadas (opcional)
+# Data validation
+pydantic>=2.6.0
+
+#Env
+python-dotenv>=1.0.0
+
