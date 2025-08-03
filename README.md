@@ -101,19 +101,24 @@ After running the app the GUI will pop up:
 2. Select the type of document. Two options are available: Power of Attorney and Tax return.
 3. Select "Process file" button and wait.
 
-### Using POA - Tech Task.docx.pdf with local LLM
+### Using "POA - Tech Task.docx.pdf" with local LLM
 
 <img width="1119" height="660" alt="image" src="https://github.com/user-attachments/assets/5a219323-a421-4532-b706-5d42de69d97e" />
 
-### Using POA - Tech Task.docx.pdf with gpt-4o-mini
+### Using "POA - Tech Task.docx.pdf" with gpt-4o-mini
 
 <img width="1120" height="654" alt="image" src="https://github.com/user-attachments/assets/4572f734-8257-43b0-90ab-97ce0d25bec7" />
 
 
-### Using tax_return.pdf with tesseract OCR
+### "Using tax_return.pdf" with tesseract OCR
 
 <img width="1120" height="660" alt="image" src="https://github.com/user-attachments/assets/6cce8e18-010b-4df5-98c9-680ac20ffd3f" />
 
+### General notes
+
+- In each sample the information of the selected file is displayed as well as the processing time.
+- OpenAI sample model "gpt-4o-mini" performs much better than the selected llama file in terms of processing and output quality. This could be caused due to the simplicity of the llama file selected for this example.
+- In the top righ corner the visualization of the extracted data can be changed for a more human version. 
 
 ## Troubleshooting
 - Ensure Tesseract path in .env is correct
