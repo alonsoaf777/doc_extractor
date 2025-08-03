@@ -15,6 +15,7 @@ cd [repo-name]
 python -m venv venv
 .\venv\Scripts\activate  # Windows
 pip install -r requirements.txt
+```
 
 ## Tesseract setup
 1. Download from: https://github.com/UB-Mannheim/tesseract/wiki
