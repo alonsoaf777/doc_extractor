@@ -97,8 +97,22 @@ After running the app the GUI will pop up:
 
 <img width="1117" height="655" alt="image" src="https://github.com/user-attachments/assets/571da283-9f7d-4412-8e11-a65910f4f5ee" />
 
-1. Select your desired document to analyze using "Select document button". In the assets folder of this project the 2 pdfs used as example are given.
+1. Select your desired document to analyze using "Select Document" button. In the assets folder of this project the 2 pdfs used as example are given.
 2. Select the type of document. Two options are available: Power of Attorney and Tax return.
+3. Select "Process file" button and wait.
+
+### Using POA - Tech Task.docx.pdf with local LLM
+
+<img width="1119" height="660" alt="image" src="https://github.com/user-attachments/assets/5a219323-a421-4532-b706-5d42de69d97e" />
+
+### Using POA - Tech Task.docx.pdf with gpt-4o-mini
+
+<img width="1120" height="654" alt="image" src="https://github.com/user-attachments/assets/4572f734-8257-43b0-90ab-97ce0d25bec7" />
+
+
+### Using tax_return.pdf with tesseract OCR
+
+<img width="1120" height="660" alt="image" src="https://github.com/user-attachments/assets/6cce8e18-010b-4df5-98c9-680ac20ffd3f" />
 
 
 ## Troubleshooting
