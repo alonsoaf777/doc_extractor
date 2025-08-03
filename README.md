@@ -92,7 +92,13 @@ project-root/
 ```
 
 ## How to use:
+
+After running the app the GUI will pop up:
+
 <img width="1117" height="655" alt="image" src="https://github.com/user-attachments/assets/571da283-9f7d-4412-8e11-a65910f4f5ee" />
+
+1. Select your desired document to analyze using "Select document button". In the assets folder of this project the 2 pdfs used as example are given.
+2. Select the type of document. Two options are available: Power of Attorney and Tax return.
 
 
 ## Troubleshooting
