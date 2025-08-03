@@ -90,6 +90,19 @@ project-root/
 ├── requirements.txt    # Python dependencies
 └── README.md           # This file
 ```
+Inside the app folder:
+```text
+app/
+│
+├── assets/                # Document samples
+├── handler/               # LLM processing functions
+├── ocr /                  # OCR processing functions
+├── utils/                 # File loader script to extract image or text from a pdf
+└── gui.py                 # GUI
+└── main.py                # Calls GUI to run app
+└── obtain_rois.ipynb      # Obtain the desired rois from a document and save them in ocr folder in json format
+```
+
 
 ## How to use:
 
