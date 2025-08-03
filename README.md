@@ -55,6 +55,21 @@ OPENAI_API_MODEL = "Llama-3.2-3B-Instruct.Q6_K.gguf"  # Your model name from cur
 ```
 
 ### Option 2: OpenAI API Processing
+1. Get your API key from OpenAI Platform
+2. Choose your preferred model
+3. Update your .env file:
+```bash
+OPENAI_API_KEY = "your-api-key-here"
+OPENAI_API_MODEL = "gpt-4o-mini"  # or your preferred model
+```
+
+Your .env file should look like this example:
+```
+TESSERACT_PATH = "C:/Program Files/Tesseract-OCR/tesseract.exe"
+OPENAI_API_KEY = "######"
+OPENAI_API_MODEL = "gpt-4"
+```
+
 
 
 
