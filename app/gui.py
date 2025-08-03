@@ -24,9 +24,12 @@ class DocumentUploader(QWidget):
         self.num_pages = None
 
     def init_ui(self):
+        '''
+        Create widgets and create the main UI
+        '''
         main_layout = QHBoxLayout()  # Principal layout. Left file selection - Right display
 
-        # Panel izquierdo: información del archivo
+        # Left panel: Document info
         self.left_panel = QVBoxLayout()
         self.label_info = QLabel("No file selected.")
         self.label_info.setAlignment(Qt.AlignTop)
@@ -71,11 +74,12 @@ class DocumentUploader(QWidget):
         self.output_box.setReadOnly(True)
         self.output_box.setPlaceholderText("Processed document content will appear here...")
 
+        #Right panel widgets
         self.right_panel.addWidget(self.view_mode)
         self.right_panel.addWidget(self.output_box)
         self.right_panel.addWidget(self.label_time)     
 
-        # Empaquetar paneles
+        # Package panels
         main_layout.addLayout(self.left_panel, 1)
         main_layout.addLayout(self.right_panel, 2)
 
@@ -93,8 +97,10 @@ class DocumentUploader(QWidget):
 
     def select_file(self):
         '''
-        After pressing select document button the path is from the
-        document is obtained and saved.
+        After pressing select document button the path is taken from the
+        document and saved.
+
+        This functions asks for just .pdf extensions
         '''
         file_path, _ = QFileDialog.getOpenFileName(
             self,
@@ -193,7 +199,7 @@ class DocumentUploader(QWidget):
     
     def update_output_view(self):
         '''
-        Display JSON view of Text view
+        Display JSON view or Text view
         '''
         if not self.processed_data:
             return
@@ -210,7 +216,6 @@ class DocumentUploader(QWidget):
                 self.show_error(f"Cannot convert to text: {str(e)}")
                 self.output_box.setPlainText(json.dumps(self.processed_data, indent=4))
                 
-
 
     def format_pretty_text(self, data: dict, indent: int = 0) -> str:
         '''
