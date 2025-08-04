@@ -109,6 +109,17 @@ app/
 └── obtain_rois.ipynb      # Obtain the desired rois from a document and save them in ocr folder in json format
 ```
 
+## Functionality 
+
+1. Pdf selection is displayed in the GUI with two available options: Estate or Tax.
+2. Optical Character Recognition: Using opencv, the coordinates from the desired boxes are extracted using obtain_rois notebook. An example is in the next image:
+   
+<img width="731" height="423" alt="image" src="https://github.com/user-attachments/assets/a44863a3-434f-4602-9e90-4ad2f94e9521" />
+
+3. Information extraction:
+- Estate: Using a strcutured promtp the data is extracted.
+- Tax: Using tbe coordinates saved in roi.json the information inside those boxes is extracted.
+
 
 ## How to use:
 
